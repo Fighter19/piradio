@@ -79,8 +79,8 @@ class MyDaemon(Daemon):
 		log.message("Radio " +  progcall + " daemon version " + radio.getVersion(), log.INFO)
 
 		hostname = exec_cmd('hostname')
-		ipaddr = exec_cmd('hostname -I') # Debian-like IP check
-#		ipaddr = exec_cmd('hostname -i') # Works for eth0 under Archlinux
+#		ipaddr = exec_cmd('hostname -I') # Debian-like IP check
+		ipaddr = exec_cmd('hostname -i') # Works for eth0 under Archlinux
 		log.message("IP " + ipaddr, log.INFO)
 		myos = exec_cmd('uname -a')
 		log.message(myos, log.INFO)
@@ -114,8 +114,8 @@ class MyDaemon(Daemon):
 
 			display_mode = radio.getDisplayMode()
 			lcd.setScrollSpeed(0.3) # Scroll speed normal 
-			ipaddr = exec_cmd('hostname -I') #Same as above
-#			ipaddr = exec_cmd('hostname -i')
+#			ipaddr = exec_cmd('hostname -I') #Same as above
+			ipaddr = exec_cmd('hostname -i')
 
 			# Shutdown command issued
 			if display_mode == radio.MODE_SHUTDOWN:
@@ -915,8 +915,8 @@ def displayWakeUpMessage(lcd):
 # Display shutdown message
 def displayShutdown(lcd):
 	lcd.line1("Stopping radio")
-	radio.execCommand("service mpd stop") # default way to start services under Debian
-#	radio.execCommand("systemctl stop mpd") # uncomment this line and comment above if you're using systemd
+#	radio.execCommand("service mpd stop") # default way to start services under Debian
+	radio.execCommand("systemctl stop mpd") # uncomment this line and comment above if you're using systemd
 	radio.execCommand("shutdown -h now")
 	lcd.line2("Shutdown issued")
 	time.sleep(3)
@@ -977,8 +977,8 @@ if __name__ == "__main__":
 		if 'start' == sys.argv[1]:
 			daemon.start()
 		elif 'stop' == sys.argv[1]:
-			os.system("service mpd stop")
-#			os.system("systemctl stop mpd") # Again systemd stuff
+#			os.system("service mpd stop")
+			os.system("systemctl stop mpd") # Again systemd stuff
 			daemon.stop()
 		elif 'restart' == sys.argv[1]:
 			daemon.restart()

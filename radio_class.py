@@ -193,7 +193,8 @@ class Radio:
 	# Start the MPD daemon
 	def start(self):
 		# Start the player daemon
-		self.execCommand("service mpd start")
+#		self.execCommand("service mpd start")
+		self.execCommand("systemctl start mpd")
 		# Connect to MPD
 		self.boardrevision = self.getBoardRevision()
 		self.mpdport = self.getMpdPort()
@@ -240,9 +241,11 @@ class Radio:
 				time.sleep(0.5)	# Wait for interrupt in the case of a shutdown
 				log.message("Restarting MPD",log.DEBUG)
 				if retry < 2:
-					self.execCommand("service mpd restart") 
+#					self.execCommand("service mpd restart") 
+					self.execCommand("systemctl restart mpd")
 				else:
-					self.execCommand("service mpd start") 
+#					self.execCommand("service mpd start") 
+					self.execCommand("systemctl start mpd")
 				time.sleep(2)	# Give MPD time to restart
 				retry -= 1
 
@@ -733,7 +736,8 @@ class Radio:
 	def streamingOn(self):
 		output_id = 2
 		self.streaming = True
-		self.execCommand("service icecast2 start")
+#		self.execCommand("service icecast2 start")
+		self.execCommand("systemctl start icecast")
 		self.execMpcCommand("enable " + str(output_id))
 		self.storeStreaming("on")
 		self.streamingStatus()
@@ -744,7 +748,8 @@ class Radio:
 		output_id = 2
 		self.streaming = False
 		self.execMpcCommand("disable " + str(output_id))
-		self.execCommand("service icecast2 stop")
+#		self.execCommand("service icecast2 stop")
+		self.execCommand("systemctl stop icecast")
 		self.storeStreaming("off")
 		self.streamingStatus()
 		return self.streaming
