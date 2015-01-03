@@ -61,8 +61,7 @@ def signalHandler(signal,frame):
 	log.message("Radio stopped, PID " + str(pid), log.INFO)
 	lcd.line1("Radio stopped")
 	lcd.line2("")
-	lcd.line3("")
-	lcd.line4("")
+	lcd.backlight_off()
 	GPIO.cleanup()
 	sys.exit(0)
 
@@ -915,6 +914,7 @@ def displayWakeUpMessage(lcd):
 # Display shutdown message
 def displayShutdown(lcd):
 	lcd.line1("Stopping radio")
+	lcd.line2(" ")
 #	radio.execCommand("service mpd stop") # default way to start services under Debian
 	radio.execCommand("systemctl stop mpd") # uncomment this line and comment above if you're using systemd
 	radio.execCommand("shutdown -h now")
@@ -922,6 +922,8 @@ def displayShutdown(lcd):
 	time.sleep(3)
 	lcd.line1("Radio stopped")
 	lcd.line2("Power off radio")
+	time.sleep(3)
+	lcd.backlight_off()
 	return
 
 def displayInfo(lcd,ipaddr,mpd_version):
